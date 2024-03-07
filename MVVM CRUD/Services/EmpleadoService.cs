@@ -3,12 +3,12 @@ using SQLite;
 
 namespace MVVM_CRUD.Services
 {
-    internal class EmpleadoService
+    public class EmpleadoService
     {
         private readonly SQLiteConnection _dbConnection;
 
         public EmpleadoService() {
-            string dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Empleado.db");
+            string dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Empleado.db3");
             _dbConnection = new SQLiteConnection(dbPath);
             _dbConnection.CreateTable<Empleado>();
         }

@@ -2,7 +2,7 @@
 
 namespace MVVM_CRUD.Models
 {
-    internal class Empleado
+    public class Empleado
     {
         [PrimaryKey, AutoIncrement]
         public int Id { get; set; }
