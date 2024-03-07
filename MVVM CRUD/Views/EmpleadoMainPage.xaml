@@ -2,11 +2,33 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MVVM_CRUD.Views.EmpleadoMainPage"
-             Title="EmpleadoMainPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             xmlns:viewModel="clr-namespace:MVVM_CRUD.ViewModels"
+             x:DataType="viewModel:EmpleadoMainPageViewModel"
+             xmlns:models="clr-namespace:MVVM_CRUD.Models"
+             Title="Empleados">
+    <ScrollView>
+        <VerticalStackLayout Padding="10,0,10,0">
+            <Button Text="Agregar Empleado" HorizontalOptions="Start" Command="{Binding GoToAddEmpleadoPageCommand}" />
+
+            <Grid Margin="0,5,0,5" RowDefinitions="Auto" ColumnDefinitions="33*,33*,33*">
+                <Label Text="Nombre" FontAttributes="Bold" HorizontalTextAlignment="Start" Grid.Row="0" Grid.Column="0" />
+                <Label Text="Correo Electrónico" FontAttributes="Bold" HorizontalTextAlignment="Start" Grid.Row="0" Grid.Column="1" />
+                <Label Text="Dirección" FontAttributes="Bold" HorizontalTextAlignment="Start" Grid.Row="0" Grid.Column="2" />
+            </Grid>
+            <CollectionView ItemsSource="{Binding EmpleadoCollection}" >
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Empleado">
+                        <Grid RowSpacing="0" RowDefinitions="10,Auto,10,0.5" ColumnDefinitions="33*,33*,33*" VerticalOptions="FillAndExpand">
+                            <Label Text="{Binding Nombre}" Grid.Row="1" Grid.Column="0" />
+                            <Label Text="{Binding Email}" Grid.Row="1" Grid.Column="1" />
+                            <Label Text="{Binding Direccion}" Grid.Row="1" Grid.Column="2" />
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={x:RelativeSource AncestorType={x:Type viewModel:EmpleadoMainPageViewModel}},Path=SelectEmpleadoCommand}" CommandParameter="{Binding .}" />
+                            </Grid.GestureRecognizers>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>
