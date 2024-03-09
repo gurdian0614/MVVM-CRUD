@@ -19,6 +19,9 @@ namespace MVVM_CRUD.ViewModels
             _empleadoService = new EmpleadoService();
         }
 
+        /// <summary>
+        /// Obtiene el listado de empleados
+        /// </summary>
         public void GetAll()
         {
             var getAll = _empleadoService.GetAll();
@@ -33,16 +36,25 @@ namespace MVVM_CRUD.ViewModels
             }
         }
 
+        /// <summary>
+        /// Redirecciona al formulario de MEpleado
+        /// </summary>
+        /// <returns></returns>
         [RelayCommand]
         private async Task GoToAddEmpleadoPage()
         {
-            await App.Current.MainPage.Navigation.PushAsync(new AddEmpleadoPage());
+            await App.Current!.MainPage!.Navigation.PushAsync(new AddEmpleadoPage());
         }
 
+        /// <summary>
+        /// Selecciona el registro para editar o eliminar
+        /// </summary>
+        /// <param name="empleado">Objeto a editar o eliminar</param>
+        /// <returns></returns>
         [RelayCommand]
         private async Task SelectEmpleado(Empleado empleado)
         {
-            string res = await App.Current.MainPage.DisplayActionSheet("Operación", "Cancelar", null, "Actualizar", "Eliminar");
+            string res = await App.Current!.MainPage!.DisplayActionSheet("Operación", "Cancelar", null, "Actualizar", "Eliminar");
 
             switch (res)
             {
@@ -50,10 +62,15 @@ namespace MVVM_CRUD.ViewModels
                     await App.Current.MainPage.Navigation.PushAsync(new AddEmpleadoPage(empleado));
                     break;
                 case "Eliminar":
-                    int del = _empleadoService.Delete(empleado);
-                    if (del > 0)
+                    bool respuesta = await Shell.Current.DisplayAlert("Eliminar Empleado", "¿Desea eliminar el empleado?", "Si", "No");
+
+                    if (respuesta)
                     {
-                        EmpleadoCollection.Remove(empleado);
+                        int del = _empleadoService.Delete(empleado);
+                        if (del > 0)
+                        {
+                            EmpleadoCollection.Remove(empleado);
+                        }
                     }
                     break;
             }

@@ -2,11 +2,6 @@
 using CommunityToolkit.Mvvm.Input;
 using MVVM_CRUD.Models;
 using MVVM_CRUD.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MVVM_CRUD.ViewModels
 {
@@ -40,24 +35,85 @@ namespace MVVM_CRUD.ViewModels
             _empleadoService = new EmpleadoService();
         }
 
+        /// <summary>
+        /// Agrega o actualiza un registro
+        /// </summary>
+        /// <returns></returns>
         [RelayCommand]
         private async Task AddUpdate()
         {
-            Empleado empleado = new Empleado {
-                Nombre = Nombre,
-                Email = Email,
-                Direccion = Direccion,
-                Id = Id
-            };
+            try
+            {
+                Empleado empleado = new Empleado
+                {
+                    Nombre = Nombre,
+                    Email = Email,
+                    Direccion = Direccion,
+                    Id = Id
+                };
 
-            if (Id == 0)
+                if (Validar(empleado))
+                {
+                    if (Id == 0)
+                    {
+                        _empleadoService.Insert(empleado);
+                    }
+                    else
+                    {
+                        _empleadoService.Update(empleado);
+                    }
+                    await App.Current!.MainPage!.Navigation.PopAsync();
+                }
+            } catch (Exception ex)
             {
-                _empleadoService.Insert(empleado);
-            } else
-            {
-                _empleadoService.Update(empleado);
+                Alerta("ERROR", ex.Message);
             }
-            await App.Current.MainPage.Navigation.PopAsync();
+        }
+
+        /// <summary>
+        /// Valida que los campos no esten vacíos
+        /// </summary>
+        /// <param name="Empleado">Objeto a validar</param>
+        /// <returns></returns>
+        private bool Validar(Empleado Empleado)
+        {
+            try
+            {
+                if (Empleado.Nombre == null || Empleado.Nombre == "")
+                {
+                    Alerta("ADVERTENCIA", "Escriba el nombre completo");
+                    return false;
+                }
+                else if (Empleado.Email == null || Empleado.Email == "")
+                {
+                    Alerta("ADVERTENCIA", "Escriba el correo electrónico");
+                    return false;
+                }
+                else if (Empleado.Direccion == null || Empleado.Direccion == "")
+                {
+                    Alerta("ADVERTENCIA", "Escriba la dirección");
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Alerta("ERROR", ex.Message);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Método personalizado para construir alertas
+        /// </summary>
+        /// <param name="Tipo">Tipo de Alerta</param>
+        /// <param name="Mensaje">Mensaje de Alerta</param>
+        private void Alerta(String Tipo, String Mensaje)
+        {
+            MainThread.BeginInvokeOnMainThread(async () => await App.Current!.MainPage!.DisplayAlert(Tipo, Mensaje, "Aceptar"));
         }
     }
 }
