@@ -37,7 +37,7 @@ namespace MVVM_CRUD.ViewModels
         }
 
         /// <summary>
-        /// Redirecciona al formulario de MEpleado
+        /// Redirecciona al formulario de Empleado
         /// </summary>
         /// <returns></returns>
         [RelayCommand]
