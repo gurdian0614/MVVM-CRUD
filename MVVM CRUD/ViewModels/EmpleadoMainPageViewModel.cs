@@ -50,7 +50,7 @@ namespace MVVM_CRUD.ViewModels
         /// Selecciona el registro para editar o eliminar
         /// </summary>
         /// <param name="empleado">Objeto a editar o eliminar</param>
-        /// <returns></returns>
+        /// <returns>Actualizar: Nos lleva al formulario de Empleado, Eliminar: Elimina el registro</returns>
         [RelayCommand]
         private async Task SelectEmpleado(Empleado empleado)
         {
