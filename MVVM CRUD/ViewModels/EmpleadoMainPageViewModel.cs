@@ -62,15 +62,10 @@ namespace MVVM_CRUD.ViewModels
                     await App.Current.MainPage.Navigation.PushAsync(new AddEmpleadoPage(empleado));
                     break;
                 case "Eliminar":
-                    bool respuesta = await Shell.Current.DisplayAlert("Eliminar Empleado", "¿Desea eliminar el empleado?", "Si", "No");
-
-                    if (respuesta)
+                    int del = _empleadoService.Delete(empleado);
+                    if (del > 0)
                     {
-                        int del = _empleadoService.Delete(empleado);
-                        if (del > 0)
-                        {
-                            EmpleadoCollection.Remove(empleado);
-                        }
+                        EmpleadoCollection.Remove(empleado);
                     }
                     break;
             }
