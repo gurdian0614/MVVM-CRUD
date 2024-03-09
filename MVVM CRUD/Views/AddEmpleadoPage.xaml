@@ -5,10 +5,15 @@
              xmlns:viewModels="clr-namespace:MVVM_CRUD.ViewModels"
              x:DataType="viewModels:AddEmpleadoPageViewModel"
              Title="Empleado Form">
-    <VerticalStackLayout Padding="10,0,10,0" VerticalOptions="StartAndExpand" HorizontalOptions="FillAndExpand">
-        <Entry Text="{Binding Nombre}" Placeholder="Ingrese el nombre" />
-        <Entry Text="{Binding Email}" Placeholder="Ingrese el correo electrónico" />
-        <Entry Text="{Binding Direccion}" Placeholder="Ingrese la dirección" />
+    <VerticalStackLayout Padding="30,10,30,10" VerticalOptions="StartAndExpand" HorizontalOptions="FillAndExpand">
+        <Label Text="Nombre completo:" />
+        <Entry Text="{Binding Nombre}" Keyboard="Text" Placeholder="Ingrese el nombre" />
+
+        <Label Text="Correo electrónico:" />
+        <Entry Text="{Binding Email}" Keyboard="Email" Placeholder="Ingrese el correo electrónico" />
+
+        <Label Text="Dirección:" />
+        <Entry Text="{Binding Direccion}" Keyboard="Text" Placeholder="Ingrese la dirección" />
         <Button Text="Guardar" x:Name="btnGuardarEditar" Command="{Binding AddUpdateCommand}" />
     </VerticalStackLayout>
 </ContentPage>
