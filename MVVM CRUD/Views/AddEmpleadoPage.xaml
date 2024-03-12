@@ -4,7 +4,7 @@
              x:Class="MVVM_CRUD.Views.AddEmpleadoPage"
              xmlns:viewModels="clr-namespace:MVVM_CRUD.ViewModels"
              x:DataType="viewModels:AddEmpleadoPageViewModel"
-             Title="Empleado Form">
+             Title="Agregar Empleado">
     <VerticalStackLayout Padding="30,10,30,10" VerticalOptions="StartAndExpand" HorizontalOptions="FillAndExpand">
         <Label Text="Nombre completo:" />
         <Entry Text="{Binding Nombre}" Keyboard="Text" Placeholder="Ingrese el nombre" />
