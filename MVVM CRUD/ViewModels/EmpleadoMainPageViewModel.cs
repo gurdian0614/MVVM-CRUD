@@ -54,21 +54,42 @@ namespace MVVM_CRUD.ViewModels
         [RelayCommand]
         private async Task SelectEmpleado(Empleado empleado)
         {
-            string res = await App.Current!.MainPage!.DisplayActionSheet("Operación", "Cancelar", null, "Actualizar", "Eliminar");
-
-            switch (res)
+            try
             {
-                case "Actualizar":
-                    await App.Current.MainPage.Navigation.PushAsync(new AddEmpleadoPage(empleado));
-                    break;
-                case "Eliminar":
-                    int del = _empleadoService.Delete(empleado);
-                    if (del > 0)
-                    {
-                        EmpleadoCollection.Remove(empleado);
-                    }
-                    break;
+                string res = await App.Current!.MainPage!.DisplayActionSheet("Operación", "Cancelar", null, "Actualizar", "Eliminar");
+
+                switch (res)
+                {
+                    case "Actualizar":
+                        await App.Current.MainPage.Navigation.PushAsync(new AddEmpleadoPage(empleado));
+                        break;
+                    case "Eliminar":
+                        bool respuesta = await App.Current!.MainPage!.DisplayAlert("Eliminar Empleado", "¿Desea eliminar el empleado?", "Si", "No");
+
+                        if (respuesta)
+                        {
+                            int del = _empleadoService.Delete(empleado);
+                            if (del > 0)
+                            {
+                                EmpleadoCollection.Remove(empleado);
+                            }
+                        }
+                        break;
+                }
+            } catch (Exception ex)
+            {
+                Alerta("ERROR", ex.Message);
             }
+        }
+
+        /// <summary>
+        /// Método personalizado para construir alertas
+        /// </summary>
+        /// <param name="Tipo">Tipo de Alerta</param>
+        /// <param name="Mensaje">Mensaje de Alerta</param>
+        private void Alerta(String Tipo, String Mensaje)
+        {
+            MainThread.BeginInvokeOnMainThread(async () => await App.Current!.MainPage!.DisplayAlert(Tipo, Mensaje, "Aceptar"));
         }
     }
 }
